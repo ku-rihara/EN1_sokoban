@@ -9,6 +9,9 @@ public class NewBehaviourScript : MonoBehaviour
 {
     public GameObject playerPrefab;
     public GameObject BoxPrefab;
+    public GameObject goalPrefab;
+
+    public GameObject clearText;
     int[,] map;//レベルデザイン用の配列
     GameObject[,] field;//ゲーム管理用の配列
   
@@ -149,6 +152,14 @@ public class NewBehaviourScript : MonoBehaviour
                     Quaternion.identity
                     );
                 }
+                else if (map[y, x] == 3)
+                {
+                    field[y, x] = Instantiate(
+                    goalPrefab,
+                    new Vector3(x, map.GetLength(0) - y, 0),
+                    Quaternion.identity
+                    );
+                }
             }
         }
     }
@@ -157,6 +168,19 @@ public class NewBehaviourScript : MonoBehaviour
     {
         //プレイヤーの移動
         PlayerMove();
+        /*
+                if (Input.GetKeyDown(KeyCode.RightArrow))
+                {
+                    Vector2Int playerIndex = GetPlayerIndex();
+                    MoveNumber(
+                        playerIndex,
+                        playerIndex + new Vector2Int(1.0)
+                    );
+                }*/
+        if (IsCleard())
+        {
+          clearText.SetActive(true);
+        }
     }
 
 
