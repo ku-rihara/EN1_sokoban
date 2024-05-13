@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Move : MonoBehaviour
 {
+
+    public void MoveTo(Vector3 destination)
+    {
+        transform.position = destination;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
