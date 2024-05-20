@@ -7,14 +7,14 @@ using UnityEngine.UIElements;
 
 public class NewBehaviourScript : MonoBehaviour
 {
+    public GameObject goalPrefab;
     public GameObject playerPrefab;
     public GameObject BoxPrefab;
-    public GameObject goalPrefab;
-
+    public Particle particlePrefab;
     public GameObject clearText;
+
     int[,] map;//レベルデザイン用の配列
     GameObject[,] field;//ゲーム管理用の配列
-  
    
     Vector2Int GetPlayerIndex()
     {
@@ -42,7 +42,8 @@ public class NewBehaviourScript : MonoBehaviour
     /// <returns></returns>
     bool MoveNumber(string tag, Vector2Int moveFrom, Vector2Int moveTo)
     {
-         //二次元配列に対応
+      
+        //二次元配列に対応
         if (moveTo.y < 0 || moveTo.y >= field.GetLength(0)) { return false; }
         if (moveTo.x < 0 || moveTo.x >= field.GetLength(1)) { return false; }
 
@@ -50,18 +51,27 @@ public class NewBehaviourScript : MonoBehaviour
         {
             Vector2Int velocity = moveTo - moveFrom;
             bool success = MoveNumber(tag, moveTo, moveTo + velocity);
+           
             if (!success) { return false; }
         }
         //二次元配列に対応
-        field[moveFrom.y, moveFrom.x].transform.position = new Vector3(moveTo.x, field.GetLength(0) - moveTo.y, 0);
-        field[moveTo.y, moveTo.x] = field[moveFrom.y, moveFrom.x];
+      /*  field[moveFrom.y, moveFrom.x].transform.position = new Vector3(moveTo.x, field.GetLength(0) - moveTo.y, 0);
+     */   Vector3 moveToPosition = new Vector3(
+        moveTo.x, field.GetLength(0) - moveTo.y, 0);
+        field[moveFrom.y,moveFrom.x].GetComponent<Move>().MoveTo(moveToPosition);
+       field[moveTo.y, moveTo.x] = field[moveFrom.y, moveFrom.x];
+        Particle instance = (Particle)Instantiate(particlePrefab,
+                                                   new Vector3Int(moveFrom.x, moveFrom.y, 0),
+                                                    Quaternion.identity);
         field[moveFrom.y, moveFrom.x] = null;
+
         return true;
     }
     void PlayerMove()
     {
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
+           
             //1.をここから記述
             //見つからなかった時の為に-1で初期化する
             Vector2Int playerIndex = GetPlayerIndex();
@@ -70,6 +80,7 @@ public class NewBehaviourScript : MonoBehaviour
              playerIndex-1よりさらに小さいインデックスの時
             のみ交換処理を行う*/
             MoveNumber("Box", playerIndex, new Vector2Int(playerIndex.x + 1, playerIndex.y));
+         
         }
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
@@ -120,6 +131,9 @@ public class NewBehaviourScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        Screen.SetResolution(1280, 720, false);
+
         map = new int[,] {//3x5のサイズ
         {0,0,0,0,0},
         {0,3,1,3,0},
@@ -168,15 +182,7 @@ public class NewBehaviourScript : MonoBehaviour
     {
         //プレイヤーの移動
         PlayerMove();
-        /*
-                if (Input.GetKeyDown(KeyCode.RightArrow))
-                {
-                    Vector2Int playerIndex = GetPlayerIndex();
-                    MoveNumber(
-                        playerIndex,
-                        playerIndex + new Vector2Int(1.0)
-                    );
-                }*/
+       
         if (IsCleard())
         {
           clearText.SetActive(true);
