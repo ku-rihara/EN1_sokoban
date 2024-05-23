@@ -60,9 +60,14 @@ public class NewBehaviourScript : MonoBehaviour
         moveTo.x, field.GetLength(0) - moveTo.y, 0);
         field[moveFrom.y,moveFrom.x].GetComponent<Move>().MoveTo(moveToPosition);
        field[moveTo.y, moveTo.x] = field[moveFrom.y, moveFrom.x];
-        Particle instance = (Particle)Instantiate(particlePrefab,
-                                                   new Vector3Int(moveFrom.x, moveFrom.y, 0),
+
+        for (int i = 0; i < 10; i++)
+        {
+            Particle instance = (Particle)Instantiate(particlePrefab,
+                                                   new Vector3Int(moveTo.x, field.GetLength(0) - moveTo.y, 0),
                                                     Quaternion.identity);
+
+        }
         field[moveFrom.y, moveFrom.x] = null;
 
         return true;

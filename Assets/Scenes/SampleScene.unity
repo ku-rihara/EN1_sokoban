@@ -715,6 +715,7 @@ MonoBehaviour:
   goalPrefab: {fileID: 8653940190250317958, guid: 35df960c89d1f7c40b75931830d1a9a9, type: 3}
   playerPrefab: {fileID: 4970114002611097984, guid: e524948650f89fe4c8e5d0772e90c9f5, type: 3}
   BoxPrefab: {fileID: 8067703913002921452, guid: 9a05f8fd17445ea4ba32bd5096771f2a, type: 3}
+  particlePrefab: {fileID: 5974272418236327872, guid: 3148958df252bb94685972903f694c59, type: 3}
   clearText: {fileID: 1602918433}
 --- !u!4 &1975565298
 Transform:

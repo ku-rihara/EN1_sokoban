@@ -44,8 +44,9 @@ public class Particle : MonoBehaviour
     {
         //残り時間をカウントダウン
         leftLifeTime -= Time.deltaTime;
+        transform.position += velocity * Time.deltaTime;
         //自身の座標を移動
-        transform.position = Vector3.Lerp(
+        transform.localScale = Vector3.Lerp(
             new Vector3(0, 0, 0),
             defaultScale,
             leftLifeTime / lifeTime
