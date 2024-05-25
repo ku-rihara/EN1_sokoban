@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
 
 public class NewBehaviourScript : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class NewBehaviourScript : MonoBehaviour
     public GameObject goalPrefab;//3
     public GameObject StopPrefab;
     public GameObject clearText;
+    public GameObject ResetText;
     public Particle particlePrefab;
 
     int[,] map;//レベルデザイン用の配列
@@ -25,11 +27,13 @@ public class NewBehaviourScript : MonoBehaviour
         Screen.SetResolution(1280, 720, false);
 
         map = new int[,] {//3x5のサイズ
-        {0,0,0,0,0},
-        {0,3,1,3,4},
-        {0,0,2,0,4},
-        {0,2,3,2,4},
-        {0,0,0,0,0},
+        {4,4,4,4,4,4,4,4,4},
+        {4,3,1,3,4,0,0,0,4},
+        {4,0,2,0,4,0,0,0,4},
+        {4,2,3,2,4,0,0,0,4},
+        {4,0,0,0,0,0,0,0,4},
+        {4,0,0,0,0,0,0,0,4},
+        {4,4,4,4,4,4,4,4,4},
         };
         field = new GameObject[
             map.GetLength(0),
@@ -78,8 +82,9 @@ public class NewBehaviourScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //プレイヤーの移動
-        PlayerMove();
+       GameReset();
+            //プレイヤーの移動
+            PlayerMove();
 
         //クリアしたら
         if (IsCleard())
@@ -189,7 +194,7 @@ public class NewBehaviourScript : MonoBehaviour
             MoveNumber("Box", playerIndex, new Vector2Int(playerIndex.x, playerIndex.y + 1));
         }
     }
-
+  
     //クリア判定
     bool IsCleard()
     {
@@ -218,4 +223,22 @@ public class NewBehaviourScript : MonoBehaviour
         //条件達成出なければ
         return true;
     }
+    public void GameReset()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            for (int y = 0; y < map.GetLength(0); y++)
+            {
+                for (int x = 0; x < map.GetLength(1); x++)
+                {
+                    //マップ内にあるものを破棄する
+                    Destroy(field[y, x]);
+                    field[y, x] = null;
+                }
+            }
+            Start();//初期化
+        }
+    }
+
 }
+
