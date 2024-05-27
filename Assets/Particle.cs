@@ -34,8 +34,8 @@ public class Particle : MonoBehaviour
         //Še•ûŒü‚Öƒ‰ƒ“ƒ_ƒ€‚Å”ò‚Î‚·
         velocity = new Vector3(
             Random.Range(-maxVelicity, maxVelicity),
-             Random.Range(-maxVelicity, maxVelicity),
-             0
+            0,
+              Random.Range(-maxVelicity, maxVelicity)
             );
     }
 
